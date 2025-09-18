@@ -153,9 +153,53 @@ body {
     z-index: 10; /* Se asegura de que esté por encima de las letras del rosco. */
 }
 
-.start-btn-center:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px var(--neon-green);
+/*
+/* =================================================================================
+   ESTILOS PARA EL BOTÓN DE CONTINUAR (PLAY)
+   ================================================================================= */
+
+/* Estilo para el botón de 'play' que aparecerá en el centro del rosco. */
+.play-btn-center {
+    /* Dimensiones y forma */
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Lo hace perfectamente circular. */
+
+    /* Apariencia */
+    background-color: var(--neon-cyan); /* Color de fondo cian neón. */
+    border: 3px solid var(--neon-cyan); /* Borde del mismo color. */
+    cursor: pointer; /* Cambia el cursor a una mano para indicar que es clickeable. */
+
+    /* Posicionamiento */
+    position: absolute; /* Permite posicionarlo exactamente en el centro del contenedor del rosco. */
+    z-index: 10; /* Se asegura de que esté por encima de las letras del rosco. */
+
+    /* Transiciones para efectos visuales suaves. */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto al pasar el ratón por encima del botón. */
+.play-btn-center:hover {
+    transform: scale(1.1); /* Agranda ligeramente el botón. */
+    box-shadow: 0 0 20px var(--neon-cyan); /* Añade un resplandor cian. */
+}
+
+/* Creación del triángulo de "play" usando un pseudo-elemento ::after. */
+.play-btn-center::after {
+    content: ''; /* Necesario para que el pseudo-elemento se muestre. */
+    position: absolute; /* Se posiciona en relación al botón. */
+    top: 50%;
+    left: 50%;
+    
+    /* Truco para crear un triángulo con bordes. */
+    width: 0;
+    height: 0;
+    border-top: 30px solid transparent; /* Borde superior transparente. */
+    border-bottom: 30px solid transparent; /* Borde inferior transparente. */
+    border-left: 50px solid var(--background-color); /* Borde izquierdo sólido, que forma el triángulo. */
+
+    /* Ajuste fino para centrar el triángulo dentro del círculo. */
+    transform: translate(-40%, -50%);
 }
 
 /* Estilo base para cada letra en el círculo. */
@@ -203,6 +247,18 @@ body {
     color: var(--background-color);
 }
 
+.letter-circle.pasapalabra-answered {
+    background-color: #b8860b;
+    border-color: #b8860b;
+    color: var(--background-color);
+}
+
+.letter-circle.pasapalabra-answered {
+    background-color: #b8860b;
+    border-color: #b8860b;
+    color: var(--background-color);
+}
+
 /* =================================================================================
    5. ZONA DE INTERACCIÓN (PREGUNTA, RESPUESTA Y BOTONES)
    ================================================================================= */
@@ -222,6 +278,21 @@ body {
     font-size: 1.2rem;
     line-height: 1.6;
     background-color: rgba(0, 255, 127, 0.05);
+}
+
+.question-pasapalabra {
+    background-color: rgba(240, 230, 140, 0.1);
+    border-color: var(--pasapalabra-color);
+}
+
+.question-correct {
+    background-color: rgba(0, 255, 127, 0.1);
+    border-color: var(--correct-color);
+}
+
+.question-incorrect {
+    background-color: rgba(255, 0, 85, 0.1);
+    border-color: var(--incorrect-color);
 }
 
 /* Área donde el presentador ve la respuesta correcta. */

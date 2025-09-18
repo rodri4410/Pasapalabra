@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (DOM element selections remain the same)
+    // DOM element selections
     const roscoContainer = document.getElementById('rosco-container');
     const questionDisplay = document.getElementById('question-display');
     const answerDisplay = document.getElementById('answer-display');
     const pasapalabraBtn = document.getElementById('pasapalabra-btn');
     const correctBtn = document.getElementById('correct-btn');
     const incorrectBtn = document.getElementById('incorrect-btn');
+    const playBtn = document.getElementById('play-btn'); // New play button
     const timerDisplay = document.getElementById('timer-display');
     const timeInput = document.getElementById('time-input');
     const scoreCorrect = document.getElementById('score-correct');
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const correctSummary = document.getElementById('correct-summary');
     const incorrectSummary = document.getElementById('incorrect-summary');
 
-    // --- 2. ESTADO DEL JUEGO Y PREGUNTAS ---
+    // Game state
     const GIST_URL = 'https://gist.githubusercontent.com/rodri4410/8e664eb1e59bf2057f0c950195303742/raw/e9260a0801c9dc470967972d4aaecdcb21d1deb7/json';
     let allQuestions = [];
     let gameQuestions = [];
@@ -27,13 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let incorrectCount = 0;
     let timer;
     let timeLeft;
+    let lastAction;
 
-    // --- 3. CARGA Y PREPARACIÓN DE PREGUNTAS ---
-
-    /**
-     * Carga las preguntas desde la URL del Gist y las guarda en el array 'questions'.
-     * Incluye un depurador para mostrar en consola el contenido recibido.
-     */
+    // Question loading
     async function loadQuestionsFromUrl() {
         try {
             const response = await fetch(GIST_URL);
@@ -62,9 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Construye un rosco de preguntas para una partida, seleccionando una al azar por cada letra.
-     */
     function buildRandomRosco(questions) {
         const groupedByLetter = questions.reduce((acc, question) => {
             const letter = question.letter.toLowerCase();
@@ -89,8 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return finalRosco;
     }
 
-    // --- 4. FLUJO DEL JUEGO ---
-
+    // Game flow
     async function setupPreGame() {
         questionDisplay.innerHTML = '<p>Cargando preguntas...</p>';
         await loadQuestionsFromUrl();
@@ -99,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         endScreen.classList.remove('active');
         startBtn.classList.remove('hidden');
+        playBtn.classList.add('hidden'); // Ensure play button is hidden initially
         timeInput.disabled = false;
         timeInput.classList.remove('hidden');
         timerDisplay.classList.add('hidden');
@@ -135,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
     }
 
-    // ... (El resto de funciones permanecen igual)
     function startGameLoop() {
         moveToNextQuestion();
     }
@@ -154,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function endGame(completed) {
         clearInterval(timer);
         setHostButtonsState(true);
+        playBtn.classList.add('hidden');
         questionDisplay.innerHTML = '<p>Juego terminado.</p>';
         answerDisplay.textContent = '';
         if (completed && incorrectCount === 0) {
@@ -172,7 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createRosco(isEmpty = false) {
         roscoContainer.innerHTML = '';
-        if (isEmpty) roscoContainer.appendChild(startBtn);
+        if (isEmpty) {
+            roscoContainer.appendChild(startBtn);
+        }
+        // Always make sure the play button is in the DOM but hidden
+        roscoContainer.appendChild(playBtn);
+        playBtn.classList.add('hidden');
+
         const letters = isEmpty ? Array.from('abcdefghijklmnopqrstuvwxyz') : gameQuestions.map(q => q.letter);
         const radius = roscoContainer.offsetWidth / 2 - 30;
         letters.forEach((letter, i) => {
@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayQuestion() {
+        questionDisplay.classList.remove('question-pasapalabra', 'question-correct', 'question-incorrect');
         const currentQ = gameQuestions[currentIndex];
         questionDisplay.innerHTML = `<p>${currentQ.question}</p>`;
         answerDisplay.textContent = currentQ.answer;
@@ -228,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
         correctCount++;
         updateLetterClass(currentQ.letter, 'correct');
         updateScores();
-        moveToNextQuestion();
+        questionDisplay.classList.add('question-correct');
+        lastAction = 'correct';
+        pauseAndShowContinue();
     }
 
     function handleIncorrect() {
@@ -237,7 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
         incorrectCount++;
         updateLetterClass(currentQ.letter, 'incorrect');
         updateScores();
-        moveToNextQuestion();
+        questionDisplay.classList.add('question-incorrect');
+        lastAction = 'incorrect';
+        pauseAndShowContinue();
     }
 
     function handlePasapalabra() {
@@ -246,8 +251,25 @@ document.addEventListener('DOMContentLoaded', () => {
             currentQ.status = 3;
             updateLetterClass(currentQ.letter, 'pasapalabra');
         }
-        currentIndex++;
+        questionDisplay.classList.add('question-pasapalabra');
+        lastAction = 'pasapalabra';
+        pauseAndShowContinue();
+    }
+
+    function handlePlay() {
+        playBtn.classList.add('hidden');
+        if (lastAction === 'pasapalabra') {
+            currentIndex++;
+        }
         moveToNextQuestion();
+        setHostButtonsState(false);
+        startTimer(); // Reanudar el tiempo
+    }
+
+    function pauseAndShowContinue() {
+        clearInterval(timer); // Pausar el tiempo
+        setHostButtonsState(true);
+        playBtn.classList.remove('hidden');
     }
 
     function resetScores() {
@@ -264,7 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateLetterClass(letter, className) {
         const letterDiv = document.getElementById(`letter-${letter}`);
         if (letterDiv) {
-            letterDiv.classList.remove('current', 'correct', 'incorrect', 'pasapalabra');
+            if (letterDiv.classList.contains('pasapalabra')) {
+                letterDiv.classList.add('pasapalabra-answered');
+            } else {
+                letterDiv.classList.remove('current', 'correct', 'incorrect', 'pasapalabra');
+            }
             letterDiv.classList.add(className);
         }
     }
@@ -298,13 +324,14 @@ document.addEventListener('DOMContentLoaded', () => {
         incorrectSummary.innerHTML += incorrectHTML || '<p>No hubo fallos.</p>';
     }
 
-    // --- 8. EVENT LISTENERS ---
+    // Event Listeners
     startBtn.addEventListener('click', initGame);
     restartBtn.addEventListener('click', setupPreGame);
     correctBtn.addEventListener('click', handleCorrect);
     incorrectBtn.addEventListener('click', handleIncorrect);
     pasapalabraBtn.addEventListener('click', handlePasapalabra);
+    playBtn.addEventListener('click', handlePlay);
     
-    // --- CARGA INICIAL ---
+    // Initial load
     setupPreGame();
 });
