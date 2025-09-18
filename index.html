@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosco Pasapalabra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="game-container">
+        <header class="game-header">
+            <div class="timer-container">
+                <label for="time-input">Tiempo (s):</label>
+                <input type="number" id="time-input" class="time-input" value="200">
+                <div id="timer-display" class="timer"></div>
+            </div>
+            <div class="scores">
+                <div class="score-box">
+                    <span class="score-label">Aciertos</span>
+                    <span id="score-correct" class="score-value">0</span>
+                </div>
+                <div class="score-box">
+                    <span class="score-label">Fallos</span>
+                    <span id="score-incorrect" class="score-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="rosco-container" class="rosco-container">
+            <button id="start-btn" class="start-btn-center">Empezar</button>
+            <!-- Las letras del rosco se generarán aquí -->
+        </div>
+
+        <section class="game-interaction">
+            <div id="question-display" class="question-display">
+                <p>Ajusta el tiempo y presiona "Empezar" en el centro del rosco.</p>
+            </div>
+            <div id="answer-display" class="answer-display">
+                <!-- La respuesta correcta aparecerá aquí para el presentador -->
+            </div>
+            <div class="host-controls">
+                <button id="correct-btn" class="game-button correct">Correcto</button>
+                <button id="incorrect-btn" class="game-button incorrect">Incorrecto</button>
+                <button id="pasapalabra-btn" class="game-button pasapalabra">Pasapalabra</button>
+            </div>
+        </section>
+
+        <div id="end-screen" class="end-screen">
+            <h2 id="end-title"></h2>
+            <p id="end-message"></p>
+            <div class="summary-container">
+                <div id="correct-summary" class="summary-list">
+                    <h3>Aciertos</h3>
+                    <!-- Listado de aciertos -->
+                </div>
+                <div id="incorrect-summary" class="summary-list">
+                    <h3>Fallos</h3>
+                    <!-- Listado de fallos -->
+                </div>
+            </div>
+            <button id="restart-btn" class="game-button">Jugar de nuevo</button>
+        </div>
+
+    </main>
+    <script src="js/main.js"></script>
+</body>
+</html>
