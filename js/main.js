@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playBtn.classList.remove('hidden');
     }
      function ShowContinue() {
-        playBtn.classList.remove('hidden');
+        playBtn.classList.add('hidden');
         moveToNextQuestion();
     }
 

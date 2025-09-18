@@ -2,7 +2,7 @@
    1. VARIABLES GLOBALES (PALETA DE COLORES Y FUENTES)
    ================================================================================= */
 :root {
-    --background-image: url("evon.jpg");
+    --background-image: url(evon.jpg);
     --primary-text-color: #e0e0e0;
     --neon-green: #00ff7f;
     --neon-cyan: #00ffff;
