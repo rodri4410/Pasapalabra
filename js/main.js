@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScores();
         questionDisplay.classList.add('question-correct');
         lastAction = 'correct';
-       // pauseAndShowContinue();
+        ShowContinue();
     }
 
     function handleIncorrect() {
@@ -269,6 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function pauseAndShowContinue() {
         clearInterval(timer); // Pausar el tiempo
         setHostButtonsState(true);
+        playBtn.classList.remove('hidden');
+    }
+     function ShowContinue() {
         playBtn.classList.remove('hidden');
     }
 
