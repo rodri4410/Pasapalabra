@@ -11,19 +11,6 @@
     --incorrect-color: #ff0055; /* Rojo/Rosa para fallos */
     --font-family: 'Fira Code', monospace; /* Fuente con estética de programador */
     --border-color: rgba(0, 255, 127, 0.3);
-    position: absolute;
-    top: 0%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: var(--neon-green);
-    opacity: 0.4; /* Baja opacidad para que no distraiga */
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1rem;
-    line-height: 1.2;
-    word-break: break-all;
-    animation: scroll-binary 15s linear infinite; /* Animación de desplazamiento */
-    z-index: 1;
 }
 
 /* =================================================================================
@@ -46,6 +33,20 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 1rem;
+
+    position: absolute;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--neon-green);
+    opacity: 0.4; /* Baja opacidad para que no distraiga */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    line-height: 1.2;
+    word-break: break-all;
+    animation: scroll-binary 15s linear infinite; /* Animación de desplazamiento */
+    z-index: 1;
 }
 
 /* Contenedor principal del juego, usando CSS Grid para el layout. */
