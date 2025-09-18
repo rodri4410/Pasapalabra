@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateScores();
         questionDisplay.classList.add('question-correct');
         lastAction = 'correct';
-        pauseAndShowContinue();
+       // pauseAndShowContinue();
     }
 
     function handleIncorrect() {
