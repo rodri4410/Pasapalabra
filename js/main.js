@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const incorrectSummary = document.getElementById('incorrect-summary');
 
     // Game state
-    const GIST_URL = 'https://gist.githubusercontent.com/rodri4410/8e664eb1e59bf2057f0c950195303742/raw/e9260a0801c9dc470967972d4aaecdcb21d1deb7/json';
+    const GIST_URL = 'https://gist.githubusercontent.com/rodri4410/8e664eb1e59bf2057f0c950195303742/raw/16530413a98d9cdcb2e7eb01bf89d27e208490f8/json';
     let allQuestions = [];
     let gameQuestions = [];
     let currentIndex = 0;
